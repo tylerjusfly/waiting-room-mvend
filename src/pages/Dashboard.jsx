@@ -24,6 +24,8 @@ const Dashboard = () => {
     .slice()
     .sort((a, b) => b.date.localeCompare(a.date));
 
+  console.log(orderedPosts);
+
   const CreatePost = async (e) => {
     e.preventDefault();
     try {
@@ -41,8 +43,13 @@ const Dashboard = () => {
       );
 
       if (postResult) {
+        let { id } = postResult;
+
+        id = 22;
+
+        console.log(id);
         notifySuccess("posted Successfully");
-        setPosts([...posts, postResult]);
+        setPosts([...posts, { id, ...postResult }]);
       }
     } catch (error) {
       console.log(error);
@@ -69,17 +76,19 @@ const Dashboard = () => {
 
   const deletePost = async (id) => {
     try {
-      const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
-      const result = await fetchTypicodeApi(url, "DELETE");
+      // const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
+      // const result = await fetchTypicodeApi(url, "DELETE");
 
-      const data_id = posts.findIndex((p) => p.id === id);
-      console.log(data_id);
+      // const data_id = posts.findIndex((p) => p.id === id);
+      // console.log(data_id);
+      const lefts = posts.filter((p) => p.id !== id);
 
-      let dataLeft = posts.slice(data_id + 1, posts.length);
+      // let dataLeft = posts.slice(index, 1);
 
-      setPosts(dataLeft);
+      setPosts(lefts);
+      console.log(lefts);
 
-      console.log(result);
+      // console.log(dataLeft);
     } catch (error) {
       console.log(error);
       notifyError("error deleting post");
@@ -160,9 +169,9 @@ const Dashboard = () => {
                         </a>
                         <span
                           className="no-underline text-grey-darker hover:text-red-dark cursor-pointer"
-                          //   onClick={() => {
-                          //     deletePost(item.id);
-                          //   }}
+                          onClick={() => {
+                            deletePost(item.id);
+                          }}
                         >
                           <img src={Delete} />
                         </span>
