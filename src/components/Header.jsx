@@ -29,50 +29,30 @@ const Header = () => {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
 
-        <div
-          className="hidden w-full md:flex md:items-center md:w-auto"
-          id="menu"
-        >
+        <div className="hidden w-full md:flex md:items-center md:w-auto" id="menu">
           <ul className="pt-4 text-base text-gray-700 md:flex md:justify-between md:pt-0">
             <li>
-              <NavLink
-                className={`${setActive} md:p-4 py-2 block hover:text-purple-400`}
-                to="login"
-              >
+              <NavLink className={`${setActive} md:p-4 py-2 block hover:text-purple-400`} to="login">
                 Login
               </NavLink>
             </li>
             {user.user && (
               <li>
-                <NavLink
-                  className="md:p-4 py-2 block hover:text-purple-400"
-                  to="dashboard"
-                >
+                <NavLink className="md:p-4 py-2 block hover:text-purple-400" to="dashboard">
                   Dashboard
                 </NavLink>
               </li>
             )}
             <li>
-              <NavLink
-                className={`md:p-4 py-2 block hover:text-purple-400 ${setActive}`}
-                to="all-articles"
-              >
+              <NavLink className={`md:p-4 py-2 block hover:text-purple-400 ${setActive}`} to="all-articles">
                 Blog
               </NavLink>
             </li>
             <li>
-              <NavLink
-                className={`md:p-4 py-2 block hover:text-purple-400 ${setActive}`}
-                to="signup"
-              >
+              <NavLink className={`md:p-4 py-2 block hover:text-purple-400 ${setActive}`} to="#">
                 Sign Up
               </NavLink>
             </li>
