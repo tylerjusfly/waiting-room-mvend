@@ -4,13 +4,12 @@ import editPen from "../assets/edit.svg";
 import cancelButton from "../assets/cancel.svg";
 
 import { notifyError, notifySuccess } from "../services/notify";
-import {
-  canEdit,
-  displayTimeAgo,
-  fetchTypicodeApi,
-} from "../services/utilities";
+import { canEdit, displayTimeAgo, fetchTypicodeApi } from "../services/utilities";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Comments from "./Comments";
+
+import { useForm } from "react-hook-form";
+import { editPostSchema } from "../services/validationSchema";
 
 const ViewPost = ({ item, setcanView, update, posts }) => {
   const { user } = useAuthContext();
@@ -33,11 +32,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
     };
 
     try {
-      const result = await fetchTypicodeApi(
-        `https://jsonplaceholder.typicode.com/posts/${item.id}`,
-        "PUT",
-        values
-      );
+      const result = await fetchTypicodeApi(`https://jsonplaceholder.typicode.com/posts/${item.id}`, "PUT", values);
 
       update(posts, result);
       setContent(result);
@@ -51,10 +46,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
 
   const fetchComments = async () => {
     try {
-      const comments = await fetchTypicodeApi(
-        `https://jsonplaceholder.typicode.com/comments?postId=${content.id}`,
-        "GET"
-      );
+      const comments = await fetchTypicodeApi(`https://jsonplaceholder.typicode.com/comments?postId=${content.id}`, "GET");
 
       comments.forEach((obj) => {
         obj.date = new Date().toISOString();
@@ -94,24 +86,19 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
                   <svg
                     className="w-7 h-7"
                     fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
                     <path d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
-                  <span className="text-xs font-semibold text-center leading-3 uppercase">
-                    Esc
-                  </span>
+                  <span className="text-xs font-semibold text-center leading-3 uppercase">Esc</span>
                 </button>
               </div>
               <div className="mb-5">
-                <label
-                  htmlFor="name"
-                  className="block mb-2 font-bold text-gray-600"
-                >
+                <label htmlFor="name" className="block mb-2 font-bold text-gray-600">
                   Title
                 </label>
                 <input
@@ -126,10 +113,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
               </div>
 
               <div className="mb-5">
-                <label
-                  htmlFor="body"
-                  className="block mb-2 font-bold text-gray-600"
-                >
+                <label htmlFor="body" className="block mb-2 font-bold text-gray-600">
                   Body
                 </label>
                 <input
@@ -141,48 +125,30 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
                   className="border border-red-300 shadow p-3 w-full rounded mb-"
                   onChange={(e) => setBody(e.target.value)}
                 />
-                <p className="text-sm text-red-400 mt-2">
-                  Post Body is Required
-                </p>
+                <p className="text-sm text-red-400 mt-2">Post Body is Required</p>
               </div>
-              <button className="block w-full bg-blue-500 text-white font-bold p-4 rounded-lg">
-                Submit
-              </button>
+              <button className="block w-full bg-blue-500 text-white font-bold p-4 rounded-lg">Submit</button>
             </form>
           </div>
         )}
         <div className="p-3 bg-white shadow rounded-lg">
           <div className="border-b flex flex-wrap justify-between">
-            <h3 className="text-xl font-bold tracking-tight text-gray-900">
-              {content.title}
-            </h3>
+            <h3 className="text-xl font-bold tracking-tight text-gray-900">{content.title}</h3>
             <div className="flex flex-row">
               {/* IF User is the owner of Post */}
               {canEdit(user, content) && (
-                <span
-                  className="cursor-pointer"
-                  onClick={() => setEditing(true)}
-                >
+                <span className="cursor-pointer" onClick={() => setEditing(true)}>
                   <img src={editPen} width={40} />
                 </span>
               )}
-              <span
-                className="cursor-pointer"
-                onClick={() => setcanView(false)}
-              >
+              <span className="cursor-pointer" onClick={() => setcanView(false)}>
                 <img src={cancelButton} width={40} />
               </span>
             </div>
           </div>
           <p className="pt-4">{content.body}</p>
           <span className="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 mt-4 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-            <svg
-              aria-hidden="true"
-              className="w-3 h-3 mr-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg aria-hidden="true" className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
@@ -195,13 +161,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
         {/* Comments */}
 
         <div className="comment">
-          {loading ? (
-            <h1>Loading....</h1>
-          ) : (
-            displayComments.map((item, index) => (
-              <Comments key={index} data={item} />
-            ))
-          )}
+          {loading ? <h1>Loading....</h1> : displayComments.map((item, index) => <Comments key={index} data={item} />)}
         </div>
         {/* Comment Ends */}
       </div>

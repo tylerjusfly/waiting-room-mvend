@@ -24,8 +24,7 @@ const Login = () => {
     // check Password
 
     if (!getUser || getUser.password !== password.toLowerCase()) {
-      console.log("User not found");
-      notifyError("User not found");
+      notifyError("Invalid user credentials");
       setLoading(false);
     }
 
@@ -42,9 +41,7 @@ const Login = () => {
   return (
     <div className="flex items-center h-screen w-full">
       <div className="w-full bg-white rounded shadow-lg p-8 m-4 md:max-w-sm md:mx-auto">
-        <span className="block w-full text-xl uppercase font-bold mb-4 text-center">
-          Login
-        </span>
+        <span className="block w-full text-xl uppercase font-bold mb-4 text-center">Login</span>
         <form className="mb-4" onSubmit={submitLogin}>
           <div className="mb-4 md:w-full">
             <label htmlFor="email" className="block text-xs mb-1">
@@ -82,7 +79,7 @@ const Login = () => {
             {loading ? <img src={waiting} width={13} /> : "Login"}
           </button>
         </form>
-        <Link className="text-blue-700 text-center text-sm" to="signup">
+        <Link className="text-blue-700 text-center text-sm" to="/signup">
           Not Signed Up yet?
         </Link>
       </div>

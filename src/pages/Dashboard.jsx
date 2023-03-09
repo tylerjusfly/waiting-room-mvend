@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { notifyError, notifySuccess } from "../services/notify";
-import {
-  displayTimeAgo,
-  fetchTypicodeApi,
-  updateArray,
-} from "../services/utilities";
+import { displayTimeAgo, fetchTypicodeApi, updateArray } from "../services/utilities";
 
 import Delete from "../assets/delete.svg";
 
@@ -20,9 +16,7 @@ const Dashboard = () => {
 
   const [canView, setCanView] = useState(false);
 
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
+  const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
 
   console.log(orderedPosts);
 
@@ -36,20 +30,16 @@ const Dashboard = () => {
         date: new Date().toISOString(),
       };
 
-      const postResult = await fetchTypicodeApi(
-        "https://jsonplaceholder.typicode.com/posts",
-        "POST",
-        values
-      );
+      const postResult = await fetchTypicodeApi("https://jsonplaceholder.typicode.com/posts", "POST", values);
 
       if (postResult) {
         let { id } = postResult;
 
-        id = 22;
-
+        id = posts.length + 1;
         console.log(id);
         notifySuccess("posted Successfully");
         setPosts([...posts, { id, ...postResult }]);
+        setPost("");
       }
     } catch (error) {
       console.log(error);
@@ -76,19 +66,10 @@ const Dashboard = () => {
 
   const deletePost = async (id) => {
     try {
-      // const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
-      // const result = await fetchTypicodeApi(url, "DELETE");
-
-      // const data_id = posts.findIndex((p) => p.id === id);
-      // console.log(data_id);
       const lefts = posts.filter((p) => p.id !== id);
-
-      // let dataLeft = posts.slice(index, 1);
 
       setPosts(lefts);
       console.log(lefts);
-
-      // console.log(dataLeft);
     } catch (error) {
       console.log(error);
       notifyError("error deleting post");
@@ -113,6 +94,7 @@ const Dashboard = () => {
         <div>
           <form className="m-8" onSubmit={CreatePost}>
             <h3>Hello {user?.user}</h3>
+
             <textarea
               className="w-full p-4 border-0 my-10"
               placeholder="What's on your mind..."
@@ -131,10 +113,7 @@ const Dashboard = () => {
                 <h1>Loading....</h1>
               ) : (
                 orderedPosts.map((item, index) => (
-                  <div
-                    key={index}
-                    className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
-                  >
+                  <div key={index} className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
                     <article className="overflow-hidden rounded-lg shadow-lg">
                       <p className="p-5">{item.body.substring(0, 100)}...</p>
 
@@ -150,21 +129,12 @@ const Dashboard = () => {
                             {item.title.substring(0, 17)}
                           </span>
                         </h1>
-                        <p className="text-grey-darker text-sm">
-                          {displayTimeAgo(item.date)}
-                        </p>
+                        <p className="text-grey-darker text-sm">{displayTimeAgo(item.date)}</p>
                       </header>
 
                       <footer className="flex items-center justify-between leading-none p-2 md:p-4">
-                        <a
-                          className="flex items-center no-underline hover:underline text-black"
-                          href="#"
-                        >
-                          <img
-                            alt="Placeholder"
-                            className="block rounded-full"
-                            src="https://picsum.photos/32/32/?random"
-                          />
+                        <a className="flex items-center no-underline hover:underline text-black" href="#">
+                          <img alt="Placeholder" className="block rounded-full" src="https://picsum.photos/32/32/?random" />
                           <p className="ml-2 text-sm">{user.user}</p>
                         </a>
                         <span
@@ -184,14 +154,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      {canView && (
-        <ViewPost
-          item={item}
-          setcanView={setCanView}
-          update={updatePostArray}
-          posts={posts}
-        />
-      )}
+      {canView && <ViewPost item={item} setcanView={setCanView} update={updatePostArray} posts={posts} />}
     </>
   );
 };
