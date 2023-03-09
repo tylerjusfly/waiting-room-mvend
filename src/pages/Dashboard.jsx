@@ -61,7 +61,6 @@ const Dashboard = () => {
       });
 
       setPosts(result);
-      // dispatch({ type: "ADD_ALL", payload: result });
       setloading(false);
     } catch (error) {
       notifyError("error fetching posts");

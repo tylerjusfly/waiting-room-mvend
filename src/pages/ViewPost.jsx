@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import editPen from "../assets/edit.svg";
 import cancelButton from "../assets/cancel.svg";
@@ -10,6 +10,7 @@ import {
   fetchTypicodeApi,
 } from "../services/utilities";
 import { useAuthContext } from "../hooks/useAuthContext";
+import Comments from "./Comments";
 
 const ViewPost = ({ item, setcanView, update, posts }) => {
   const { user } = useAuthContext();
@@ -18,6 +19,8 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
   const [title, setTitle] = useState(item.title);
   const [body, setBody] = useState(item.body);
   const [content, setContent] = useState(item);
+  const [loading, setLoading] = useState(true);
+  const [displayComments, setDisplayComments] = useState([]);
 
   const editUserPost = async (e) => {
     e.preventDefault();
@@ -46,23 +49,50 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
     }
   };
 
+  const fetchComments = async () => {
+    try {
+      const comments = await fetchTypicodeApi(
+        `https://jsonplaceholder.typicode.com/comments?postId=${content.id}`,
+        "GET"
+      );
+
+      comments.forEach((obj) => {
+        obj.date = new Date().toISOString();
+      });
+
+      console.log("comments==> ", comments);
+
+      setDisplayComments(comments);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      notifyError("unable to fetch comments");
+    }
+  };
+
+  useEffect(() => {
+    if (loading) {
+      fetchComments();
+    }
+  }, []);
+
   return (
     <div className="container my-12 mx-auto px-4 md:px-12">
       <div className="space-y-5">
         {editing && (
-          <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <form
-              class="px-8 py-6 space-y-6 overflow-hidden bg-white rounded-md shadow-lg transition duration-300 ease-in-out transform"
+              className="px-8 py-6 space-y-6 overflow-hidden bg-white rounded-md shadow-lg transition duration-300 ease-in-out transform"
               onSubmit={editUserPost}
             >
               <div>
                 <button
                   onClick={() => setEditing(false)}
                   type="button"
-                  class="flex flex-col items-center text-gray-400 hover:text-gray-500 transition duration-150 ease-in-out"
+                  className="flex flex-col items-center text-gray-400 hover:text-gray-500 transition duration-150 ease-in-out"
                 >
                   <svg
-                    class="w-7 h-7"
+                    className="w-7 h-7"
                     fill="none"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -72,13 +102,16 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
                   >
                     <path d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
-                  <span class="text-xs font-semibold text-center leading-3 uppercase">
+                  <span className="text-xs font-semibold text-center leading-3 uppercase">
                     Esc
                   </span>
                 </button>
               </div>
-              <div class="mb-5">
-                <label for="name" class="block mb-2 font-bold text-gray-600">
+              <div className="mb-5">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 font-bold text-gray-600"
+                >
                   Title
                 </label>
                 <input
@@ -92,8 +125,11 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
                 />
               </div>
 
-              <div class="mb-5">
-                <label for="body" class="block mb-2 font-bold text-gray-600">
+              <div className="mb-5">
+                <label
+                  htmlFor="body"
+                  className="block mb-2 font-bold text-gray-600"
+                >
                   Body
                 </label>
                 <input
@@ -105,15 +141,16 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
                   className="border border-red-300 shadow p-3 w-full rounded mb-"
                   onChange={(e) => setBody(e.target.value)}
                 />
-                <p class="text-sm text-red-400 mt-2">Post Body is Required</p>
+                <p className="text-sm text-red-400 mt-2">
+                  Post Body is Required
+                </p>
               </div>
-              <button class="block w-full bg-blue-500 text-white font-bold p-4 rounded-lg">
+              <button className="block w-full bg-blue-500 text-white font-bold p-4 rounded-lg">
                 Submit
               </button>
             </form>
           </div>
         )}
-
         <div className="p-3 bg-white shadow rounded-lg">
           <div className="border-b flex flex-wrap justify-between">
             <h3 className="text-xl font-bold tracking-tight text-gray-900">
@@ -138,23 +175,35 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
             </div>
           </div>
           <p className="pt-4">{content.body}</p>
-          <span class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 mt-4 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+          <span className="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 mt-4 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
             <svg
               aria-hidden="true"
-              class="w-3 h-3 mr-1"
+              className="w-3 h-3 mr-1"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
             {displayTimeAgo(content.date)}
           </span>
         </div>
+        {/* Comments */}
+
+        <div className="comment">
+          {loading ? (
+            <h1>Loading....</h1>
+          ) : (
+            displayComments.map((item, index) => (
+              <Comments key={index} data={item} />
+            ))
+          )}
+        </div>
+        {/* Comment Ends */}
       </div>
     </div>
   );

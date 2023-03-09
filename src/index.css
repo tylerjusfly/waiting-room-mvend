@@ -6,5 +6,72 @@
   font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
 }
 
-/* .Toastify__toast-container {
-} */
+.is-mute {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #969696;
+}
+
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  transition: 0.2s ease;
+}
+
+.btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #1c1c1c;
+  padding: 4px 8px;
+  font-size: 16px;
+  background: transparent;
+  gap: 6px;
+  border-radius: 8px;
+}
+.btn i {
+  font-size: 16px;
+  color: #969696;
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.06);
+}
+.btn:hover {
+  border-color: #969696;
+}
+
+.comment {
+  display: grid;
+  gap: 20px;
+  user-select: none;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto 1fr 110px;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+}
+
+.content-footer {
+  margin-top: 12px;
+  gap: 12px;
+  display: flex;
+  align-items: center;
+}
