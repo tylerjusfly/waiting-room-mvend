@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import WaitingLogo from "../assets/logo.svg";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { selectUser } from "../redux/features/authSlice";
 
 const Header = () => {
-  const { user } = useAuthContext();
+  const user = useSelector(selectUser);
 
   const styles = `text-purple-500`;
 
@@ -42,7 +44,7 @@ const Header = () => {
                 Login
               </NavLink>
             </li>
-            {user.user && (
+            {user.id && (
               <li>
                 <NavLink className="md:p-4 py-2 block hover:text-purple-400" to="dashboard">
                   Dashboard

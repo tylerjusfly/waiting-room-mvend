@@ -6,9 +6,14 @@ import { displayTimeAgo, fetchTypicodeApi, updateArray } from "../services/utili
 import Delete from "../assets/delete.svg";
 
 import ViewPost from "./ViewPost";
+import { selectUser } from "../redux/features/authSlice";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const { user } = useAuthContext();
+  const user = useSelector(selectUser);
+
+  console.log("rdux", user);
+
   const [post, setPost] = useState("");
   const [loading, setloading] = useState(true);
   const [posts, setPosts] = useState([]);
@@ -17,7 +22,6 @@ const Dashboard = () => {
   const [canView, setCanView] = useState(false);
 
   const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
-
 
   const CreatePost = async (e) => {
     e.preventDefault();
@@ -87,7 +91,7 @@ const Dashboard = () => {
       {!canView && (
         <div>
           <form className="m-8" onSubmit={CreatePost}>
-            <h3>Hello {user?.user}</h3>
+            <h3>Hello {user?.username}</h3>
 
             <textarea
               className="w-full p-4 border-0 my-10"
@@ -129,7 +133,7 @@ const Dashboard = () => {
                       <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                         <a className="flex items-center no-underline hover:underline text-black" href="#">
                           <img alt="Placeholder" className="block rounded-full" src="https://picsum.photos/32/32/?random" />
-                          <p className="ml-2 text-sm">{user.user}</p>
+                          <p className="ml-2 text-sm">{user.username}</p>
                         </a>
                         <span
                           className="no-underline text-grey-darker hover:text-red-dark cursor-pointer"

@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
 import { Users } from "../services/dummydata";
 import { notifyError, notifySuccess } from "../services/notify";
+
+import { loginUser } from "../redux/features/authSlice";
+
+import { useDispatch } from "react-redux";
 
 import waiting from "../assets/rhombus-loader.gif";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const { dispatch, user } = useAuthContext();
 
   const submitLogin = (e) => {
     e.preventDefault();
@@ -32,7 +34,8 @@ const Login = () => {
 
     if (getUser.password === password.toLowerCase()) {
       notifySuccess("Login Success");
-      dispatch({ type: "LOGIN", payload: values });
+      dispatch(loginUser(values));
+
       navigate("/dashboard");
       setLoading(false);
     }

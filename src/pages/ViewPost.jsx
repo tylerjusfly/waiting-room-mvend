@@ -5,14 +5,15 @@ import cancelButton from "../assets/cancel.svg";
 
 import { notifyError, notifySuccess } from "../services/notify";
 import { displayTimeAgo, fetchTypicodeApi, hasAccess } from "../services/utilities";
-import { useAuthContext } from "../hooks/useAuthContext";
 import Comments from "./Comments";
 
 import EditForm from "../components/forms/EditForm";
 import Input from "./Input";
+import { selectUser } from "../redux/features/authSlice";
+import { useSelector } from "react-redux";
 
 const ViewPost = ({ item, setcanView, update, posts }) => {
-  const { user } = useAuthContext();
+  const user = useSelector(selectUser);
 
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(item.title);
@@ -54,7 +55,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
       date: new Date().toISOString(),
       email: "Veronica_Goodwin@timmothy.net",
       id: displayComments.length + 1,
-      name: user.user,
+      name: user.username,
       postId: item.id,
     };
 

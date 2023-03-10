@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import Delete from "../assets/delete.svg";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { selectUser } from "../redux/features/authSlice";
 import { notifyError } from "../services/notify";
 import { displayTimeAgo, fetchTypicodeApi, findUsername, hasAccess, updateArray } from "../services/utilities";
 import ViewPost from "./ViewPost";
 
 const AllPosts = () => {
-  const { user } = useAuthContext();
+  const user = useSelector(selectUser);
 
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
