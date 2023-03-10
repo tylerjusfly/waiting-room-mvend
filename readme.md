@@ -6,8 +6,7 @@ doesn’t have an API to create a user with a password.
 
 [x] The website should have a clean and user-friendly interface.
 
-[x] React Router , NavBAr
-[x] LOGIN AND CHECK FOR UNATH GREAT
+Notes : `User gets logged out after 10 seconds on idle`
 
 https://cdn1.vectorstock.com/i/1000x1000/03/30/login-form-design-vector-19450330.jpg
 

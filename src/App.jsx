@@ -23,7 +23,6 @@ function App() {
       notifySuccess("session expired");
       logOut();
     }
-    console.log(user);
   };
 
   // Logs user out if user is idle for 10 seconds
