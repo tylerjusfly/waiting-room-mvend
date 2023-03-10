@@ -40,7 +40,7 @@ const AllPosts = () => {
     try {
       const lefts = allPosts.filter((p) => p.id !== id);
 
-      setPosts(lefts);
+      setAllPosts(lefts);
       console.log(lefts);
     } catch (error) {
       console.log(error);
