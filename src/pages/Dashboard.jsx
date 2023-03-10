@@ -7,16 +7,17 @@ import Delete from "../assets/delete.svg";
 
 import ViewPost from "./ViewPost";
 import { selectUser } from "../redux/features/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { appendToPosts, loadingState, selectAllPosts, setPosts } from "../redux/features/postsSlice";
 
 const Dashboard = () => {
   const user = useSelector(selectUser);
-
-  console.log("rdux", user);
+  const posts = useSelector(selectAllPosts);
+  const loading = useSelector(loadingState);
+  const dispatch = useDispatch();
 
   const [post, setPost] = useState("");
-  const [loading, setloading] = useState(true);
-  const [posts, setPosts] = useState([]);
+
   const [item, setItem] = useState();
 
   const [canView, setCanView] = useState(false);
@@ -34,10 +35,8 @@ const Dashboard = () => {
         date: new Date().toISOString(),
       };
 
-      // const postResult = await fetchTypicodeApi("https://jsonplaceholder.typicode.com/posts", "POST", values);
-
       notifySuccess("posted Successfully");
-      setPosts([...posts, values]);
+      dispatch(appendToPosts(values));
       setPost("");
     } catch (error) {
       console.log(error);
@@ -55,8 +54,7 @@ const Dashboard = () => {
         obj.date = new Date().toISOString();
       });
 
-      setPosts(result);
-      setloading(false);
+      dispatch(setPosts(result));
     } catch (error) {
       notifyError("error fetching posts");
     }
@@ -66,7 +64,7 @@ const Dashboard = () => {
     try {
       const lefts = posts.filter((p) => p.id !== id);
 
-      setPosts(lefts);
+      dispatch(setPosts(lefts));
       console.log(lefts);
     } catch (error) {
       console.log(error);
@@ -77,7 +75,7 @@ const Dashboard = () => {
   const updatePostArray = (list, payload) => {
     const mutatedData = updateArray(list, payload);
     console.log("mutate", mutatedData);
-    setPosts(mutatedData);
+    dispatch(setPosts(mutatedData));
   };
 
   useEffect(() => {

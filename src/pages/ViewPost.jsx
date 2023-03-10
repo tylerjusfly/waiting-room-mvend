@@ -47,8 +47,6 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
     }
   };
 
-  console.log(displayComments);
-
   const addToComment = () => {
     const commentValues = {
       body: comment,
@@ -71,8 +69,6 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
       comments.forEach((obj) => {
         obj.date = new Date().toISOString();
       });
-
-      console.log("comments==> ", comments);
 
       setDisplayComments(comments);
       setLoading(false);
