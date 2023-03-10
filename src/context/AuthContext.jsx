@@ -11,6 +11,13 @@ const reducer = (state, action) => {
         user: action.payload.username,
         pass: action.payload.password,
       };
+    case "LOGOUT":
+      return {
+        ...state,
+        id: null,
+        user: null,
+        pass: null,
+      };
 
     default:
       return { ...state };
@@ -24,13 +31,9 @@ export const AuthContextProvider = ({ children }) => {
     pass: null,
   });
 
-  // const logOut = () => {
-  //   dispatch({ type: "LOGOUT" });
-  // };
+  const logOut = () => {
+    dispatch({ type: "LOGOUT" });
+  };
 
-  return (
-    <AuthContext.Provider value={{ user: state, dispatch }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user: state, dispatch, logOut }}>{children}</AuthContext.Provider>;
 };

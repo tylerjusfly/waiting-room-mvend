@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import editPen from "../assets/edit.svg";
 import cancelButton from "../assets/cancel.svg";
@@ -9,6 +9,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import Comments from "./Comments";
 
 import EditForm from "../components/forms/EditForm";
+import Input from "./Input";
 
 const ViewPost = ({ item, setcanView, update, posts }) => {
   const { user } = useAuthContext();
@@ -19,6 +20,8 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
   const [content, setContent] = useState(item);
   const [loading, setLoading] = useState(true);
   const [displayComments, setDisplayComments] = useState([]);
+
+  const [comment, setComment] = useState("");
 
   const editUserPost = async (e) => {
     e.preventDefault();
@@ -43,6 +46,23 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
     }
   };
 
+  console.log(displayComments);
+
+  const addToComment = () => {
+    const commentValues = {
+      body: comment,
+      date: new Date().toISOString(),
+      email: "Veronica_Goodwin@timmothy.net",
+      id: displayComments.length + 1,
+      name: user.user,
+      postId: item.id,
+    };
+
+    setDisplayComments([...displayComments, commentValues]);
+
+    setComment("");
+  };
+
   const fetchComments = async () => {
     try {
       const comments = await fetchTypicodeApi(`https://jsonplaceholder.typicode.com/comments?postId=${content.id}`, "GET");
@@ -65,7 +85,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
     if (loading) {
       fetchComments();
     }
-  }, []);
+  }, [displayComments]);
 
   return (
     <div className="container my-12 mx-auto px-4 md:px-12">
@@ -106,6 +126,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
           {loading ? <h1>Loading....</h1> : displayComments.map((item, index) => <Comments key={index} data={item} />)}
         </div>
         {/* Comment Ends */}
+        <Input name="comment" value={comment} onChange={(e) => setComment(e.target.value)} save={addToComment} />
       </div>
     </div>
   );

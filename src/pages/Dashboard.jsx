@@ -18,7 +18,6 @@ const Dashboard = () => {
 
   const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
 
-  console.log(orderedPosts);
 
   const CreatePost = async (e) => {
     e.preventDefault();
