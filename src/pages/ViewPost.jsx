@@ -4,7 +4,7 @@ import editPen from "../assets/edit.svg";
 import cancelButton from "../assets/cancel.svg";
 
 import { notifyError, notifySuccess } from "../services/notify";
-import { canEdit, displayTimeAgo, fetchTypicodeApi } from "../services/utilities";
+import { displayTimeAgo, fetchTypicodeApi, hasAccess } from "../services/utilities";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Comments from "./Comments";
 
@@ -78,7 +78,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
             <h3 className="text-xl font-bold tracking-tight text-gray-900">{content.title}</h3>
             <div className="flex flex-row">
               {/* IF User is the owner of Post */}
-              {canEdit(user, content) && (
+              {hasAccess(user, content) && (
                 <span className="cursor-pointer" onClick={() => setEditing(true)}>
                   <img src={editPen} width={40} />
                 </span>
@@ -100,8 +100,8 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
             {displayTimeAgo(content.date)}
           </span>
         </div>
-        {/* Comments */}
 
+        {/* Comments */}
         <div className="comment">
           {loading ? <h1>Loading....</h1> : displayComments.map((item, index) => <Comments key={index} data={item} />)}
         </div>

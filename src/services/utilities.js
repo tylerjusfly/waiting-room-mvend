@@ -24,11 +24,7 @@ export const updateArray = (list, payload) => {
   if (data) {
     const index = list.findIndex((d) => d.id === payload.id);
 
-    return [
-      ...list.slice(0, index),
-      { ...data, ...payload },
-      ...list.slice(index + 1),
-    ];
+    return [...list.slice(0, index), { ...data, ...payload }, ...list.slice(index + 1)];
   }
 
   return list;
@@ -40,4 +36,4 @@ export const findUsername = (userid) => {
   return userObj ? userObj.username : "guest";
 };
 
-export const canEdit = (user, post) => user.id === post.userId;
+export const hasAccess = (user, post) => user.id === post.userId;

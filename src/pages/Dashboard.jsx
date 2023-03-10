@@ -24,23 +24,18 @@ const Dashboard = () => {
     e.preventDefault();
     try {
       const values = {
+        id: posts.length + 1,
         title: "foo",
         body: post,
         userId: user.id,
         date: new Date().toISOString(),
       };
 
-      const postResult = await fetchTypicodeApi("https://jsonplaceholder.typicode.com/posts", "POST", values);
+      // const postResult = await fetchTypicodeApi("https://jsonplaceholder.typicode.com/posts", "POST", values);
 
-      if (postResult) {
-        let { id } = postResult;
-
-        id = posts.length + 1;
-        console.log(id);
-        notifySuccess("posted Successfully");
-        setPosts([...posts, { id, ...postResult }]);
-        setPost("");
-      }
+      notifySuccess("posted Successfully");
+      setPosts([...posts, values]);
+      setPost("");
     } catch (error) {
       console.log(error);
       notifyError("error posting data");
