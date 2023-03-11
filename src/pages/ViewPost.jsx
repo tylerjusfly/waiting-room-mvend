@@ -123,7 +123,7 @@ const ViewPost = ({ item, setcanView, update, posts }) => {
           {loading ? <h1>Loading....</h1> : displayComments.map((item, index) => <Comments key={index} data={item} />)}
         </div>
         {/* Comment Ends */}
-        <Input name="comment" value={comment} onChange={(e) => setComment(e.target.value)} save={addToComment} />
+        {user.id && <Input name="comment" value={comment} onChange={(e) => setComment(e.target.value)} save={addToComment} />}
       </div>
     </div>
   );
